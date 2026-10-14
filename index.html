@@ -802,7 +802,7 @@
       groom: "Dani Pangestu",
       brideShort: "Dina Pangesti",
       groomShort: "Dani Pangestu",
-      recipientName: "Tamu Undangan", // GANTI nama ini untuk setiap salinan file undangan.
+      recipientName: "Tamu Undangan", // Nama default; parameter URL ?to= akan menimpa nama ini.
       weddingDate: "", // contoh: "2027-06-12T09:00:00+08:00"
       dateLabel: "Tanggal pernikahan",
       venue: "Nama tempat acara",
@@ -928,8 +928,9 @@
     const fullNames = `${CONFIG.groomShort} & ${CONFIG.brideShort}`;
     $("openingNames").innerHTML = `${escapeHTML(CONFIG.groomShort)}<br><span class="italic">&</span> ${escapeHTML(CONFIG.brideShort)}`;
     $("openingDate").textContent = CONFIG.dateLabel;
-    // Cara paling sederhana tanpa hosting: ubah CONFIG.recipientName sebelum menyalin file untuk tamu.
-    const recipientName = clean(CONFIG.recipientName) || "Tamu Undangan";
+    // Personalisasi nama tamu dari tautan: ?to=Nama%20Tamu. Teks ditampilkan dengan textContent agar aman.
+    const recipientFromLink = new URLSearchParams(window.location.search).get("to");
+    const recipientName = clean(recipientFromLink || CONFIG.recipientName) || "Tamu Undangan";
     $("recipientName").textContent = recipientName;
     $("envelopeTapTarget").setAttribute("aria-label", `Buka amplop undangan untuk ${recipientName}`);
     $("envelopeMonogram").textContent = `${CONFIG.groomShort.slice(0,1)} & ${CONFIG.brideShort.slice(0,1)}`;
